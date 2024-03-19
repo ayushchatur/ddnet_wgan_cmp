@@ -134,7 +134,7 @@ def main(args):
     root_lq_dir = "/projects/synergy_lab/garvit217/enhancement_data/train/LQ/"
     # root_hq_dir = "/Users/ayushchaturvedi/Documents/train_2d/HQ/"
     # root_lq_dir = "/Users/ayushchaturvedi/Documents/train_2d/LQ/"
-# ""
+
 
 
     dataset_ = CTDataset(root_hq_dir, root_lq_dir,5120)
@@ -169,14 +169,17 @@ if __name__ == "__main__":
     parser.add_argument('--transform', type=bool, default=False)
     # if patch training, batch size is (--patch_n x --batch_size)
     parser.add_argument('--patch_n', type=int, default=10)
-    parser.add_argument('--patch_size', type=int, default=80)
-    parser.add_argument('--batch_size', type=int, default=16)
+    # parser.add_argument('--patch_size', type=int, default=80)
+    parser.add_argument('--patch_size', type=int, default=0)
 
+    parser.add_argument('--batch_size', type=int, default=16)
     parser.add_argument('--num_epochs', type=int, default=200)
-    parser.add_argument('--print_iters', type=int, default=20)
+
+    parser.add_argument('--print_iters', type=int, default=10)
     parser.add_argument('--decay_iters', type=int, default=3000)
-    parser.add_argument('--save_iters', type=int, default=1000)
-    parser.add_argument('--test_iters', type=int, default=1000)
+
+    parser.add_argument('--save_iters', type=int, default=10)
+    parser.add_argument('--test_iters', type=int, default=10)
 
     parser.add_argument('--n_d_train', type=int, default=4)
 

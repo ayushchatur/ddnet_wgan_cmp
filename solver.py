@@ -175,6 +175,7 @@ class Solver(object):
                     self.lr_decay()
                 # save model
                 if total_iters % self.save_iters == 0:
+                    print(f'saving cheking point at: {total_iters}')
                     self.save_model(total_iters, train_losses)
 
 
