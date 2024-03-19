@@ -130,10 +130,10 @@ def main(args):
             os.makedirs(fig_path)
             print('Create path : {}'.format(fig_path))
 
-    # root_hq_dir = "/projects/synergy_lab/garvit217/enhancement_data/train/HQ/"
-    # root_lq_dir = "/projects/synergy_lab/garvit217/enhancement_data/train/LQ/"
-    root_hq_dir = "/Users/ayushchaturvedi/Documents/train_2d/HQ/"
-    root_lq_dir = "/Users/ayushchaturvedi/Documents/train_2d/LQ/"
+    root_hq_dir = "/projects/synergy_lab/garvit217/enhancement_data/train/HQ/"
+    root_lq_dir = "/projects/synergy_lab/garvit217/enhancement_data/train/LQ/"
+    # root_hq_dir = "/Users/ayushchaturvedi/Documents/train_2d/HQ/"
+    # root_lq_dir = "/Users/ayushchaturvedi/Documents/train_2d/LQ/"
 # ""
 
 
