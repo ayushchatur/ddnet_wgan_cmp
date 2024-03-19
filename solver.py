@@ -133,11 +133,14 @@ class Solver(object):
             for iter_,  sample in enumerate(self.data_loader):
                 total_iters += 1
                 # add 1 channel
-                x = sample['LQ']
+                x = sample['LQ'] # x shape = batch_size, 512, 512
                 y = sample['HQ']
                 fname = sample['vol']
-                x = x.unsqueeze(0).float().to(self.device)
-                y = y.unsqueeze(0).float().to(self.device)
+                # x = x.unsqueeze(0).float().to(self.device)
+                # y = y.unsqueeze(0).float().to(self.device) ## size now : 1, batch_size, 512, 512
+                x = x.float().to(self.device)
+                y = y.float().to(self.device)
+
                 # patch training
                 if self.patch_size > 0:
                     x = x.view(-1, 1, self.patch_size, self.patch_size)
