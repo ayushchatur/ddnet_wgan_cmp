@@ -141,6 +141,8 @@ class Solver(object):
                     y = y.view(-1, 1, self.patch_size, self.patch_size)
 
                 # discriminator
+                print("### Discriminator ##")
+
                 self.optimizer_d.zero_grad()
                 self.WGANVGG.discriminator.zero_grad()
                 for _ in range(self.n_d_train):
@@ -152,6 +154,7 @@ class Solver(object):
                 self.optimizer_g.zero_grad()
                 self.WGANVGG.generator.zero_grad()
                 g_loss, p_loss = self.WGANVGG.g_loss(x, y, perceptual=True, return_p=True)
+                print("### Backward ##")
                 g_loss.backward()
                 self.optimizer_g.step()
 
@@ -167,6 +170,8 @@ class Solver(object):
                 # save model
                 if total_iters % self.save_iters == 0:
                     self.save_model(total_iters, train_losses)
+
+
 
 
     def test(self):
