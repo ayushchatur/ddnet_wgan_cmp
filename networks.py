@@ -110,10 +110,16 @@ class WGAN_VGG(nn.Module):
 
     def gp(self, y, fake, lambda_=10):
         assert y.size() == fake.size()
-        a = torch.FloatTensor(np.random.random((y.size(0), 1, 1, 1)), device=y.device)
+        # torch.tensor([0.485, 0.456, 0.406], device=devc)
+
+        a = torch.from_numpy(np.random.random((y.size(0), 1, 1, 1)))
+        a = a.type(torch.float32).to(device = y.device)
         interp = (a*y + ((1-a)*fake)).requires_grad_(True)
         d_interp = self.discriminator(interp)
-        fake_ = torch.FloatTensor(y.shape[0], 1, device=y.device).fill_(1.0).requires_grad_(False)
+        fake_ = torch.FloatTensor(y.shape[0], 1).fill_(1.0).requires_grad_(False)
+
+        fake2 = torch.ones((y.shape[0], 1), dtype=torch.float32, device=y.device, requires_grad=False)
+        # fake2 = fake_.fill_(1.0)
         gradients = torch.autograd.grad(
             outputs=d_interp, inputs=interp, grad_outputs=fake_,
             create_graph=True, retain_graph=True, only_inputs=True
