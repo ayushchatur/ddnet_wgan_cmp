@@ -130,9 +130,12 @@ class Solver(object):
         start_time = time.time()
 
         for epoch in range(1, self.num_epochs):
-            for iter_, (x, y) in enumerate(self.data_loader):
+            for iter_,  sample in enumerate(self.data_loader):
                 total_iters += 1
                 # add 1 channel
+                x = sample['LQ']
+                y = sample['HQ']
+                fname = sample['vol']
                 x = x.unsqueeze(0).float().to(self.device)
                 y = y.unsqueeze(0).float().to(self.device)
                 # patch training
