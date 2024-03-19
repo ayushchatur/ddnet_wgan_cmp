@@ -139,7 +139,7 @@ class Solver(object):
                 x = x.unsqueeze(0).float().to(self.device)
                 y = y.unsqueeze(0).float().to(self.device)
                 # patch training
-                if self.patch_size:
+                if self.patch_size > 0:
                     x = x.view(-1, 1, self.patch_size, self.patch_size)
                     y = y.view(-1, 1, self.patch_size, self.patch_size)
 
