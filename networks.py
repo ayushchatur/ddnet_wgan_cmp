@@ -17,6 +17,7 @@ class WGAN_VGG_generator(nn.Module):
         self.net = nn.Sequential(*layers)
 
     def forward(self, x):
+        print(f"x.size: {x.shape}")
         out = self.net(x)
         return out
 
@@ -39,8 +40,8 @@ class WGAN_VGG_discriminator(nn.Module):
         ch_stride_set = [(1,64,1),(64,64,2),(64,128,1),(128,128,2),(128,256,1),(256,256,2)]
         for ch_in, ch_out, stride in ch_stride_set:
             add_block(layers, ch_in, ch_out, stride)
-
-        self.output_size = conv_output_size(input_size, [3]*6, [1,2]*3)
+        self.input_size = input_size
+        self.output_size = conv_output_size(self.input_size, [3]*6, [1,2]*3)
         self.net = nn.Sequential(*layers)
         self.fc1 = nn.Linear(256*self.output_size*self.output_size, 1024)
         self.fc2 = nn.Linear(1024, 1)
