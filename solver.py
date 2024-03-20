@@ -126,12 +126,17 @@ class Solver(object):
 
     def train(self):
         train_losses = []
+        g_loss = None
+        d_loss = None
+        gp_loss = None
+        p_loss = None
         total_iters = 0
         start_time = time.time()
 
+        # total_iters = num_epochs * len(data_loader)
         for epoch in range(1, self.num_epochs):
             for iter_,  sample in enumerate(self.data_loader):
-                total_iters += 1
+                total_iters += 1 # total_iters = num_epochs * len(data_loader)
                 # add 1 channel
                 x = sample['LQ'] # x shape = batch_size, 512, 512
                 y = sample['HQ']
@@ -164,19 +169,22 @@ class Solver(object):
                 g_loss.backward()
                 self.optimizer_g.step()
 
-                train_losses.append([g_loss.item()-p_loss.item(), p_loss.item(),
-                                     d_loss.item()-gp_loss.item(), gp_loss.item()])
 
-                # print
-                if total_iters % self.print_iters == 0:
+                if total_iters % self.print_iters == 0: # total_iters = num_epochs * len(data_loader)
                     print("STEP [{}], EPOCH [{}/{}], ITER [{}/{}], TIME [{:.1f}s]\nG_LOSS: {:.8f}, D_LOSS: {:.8f}".format(total_iters, epoch, self.num_epochs, iter_ + 1, len(self.data_loader), time.time() - start_time, g_loss.item(), d_loss.item()))
                 # learning rate decay
-                if total_iters % self.decay_iters == 0:
+                if total_iters % self.decay_iters == 0: # total_iters = num_epochs * len(data_loader)
                     self.lr_decay()
                 # save model
-                if total_iters % self.save_iters == 0:
-                    print(f'saving cheking point at: {total_iters}')
-                    self.save_model(total_iters, train_losses)
+
+
+            train_losses.append([g_loss.item(), p_loss.item(), d_loss.item(), gp_loss.item(),
+                                 g_loss.item() - p_loss.item(),
+                                 d_loss.item() - gp_loss.item()])
+            if epoch % self.save_iters == 0:  # total_iters = num_epochs * len(data_loader)
+                print(f'saving cheking point at: {total_iters}')
+                self.save_model(total_iters, train_losses)
+            # print
 
 
 
