@@ -17,7 +17,7 @@ class WGAN_VGG_generator(nn.Module):
         self.net = nn.Sequential(*layers)
 
     def forward(self, x):
-        print(f"x.size: {x.shape}")
+        # print(f"x.size: {x.shape}")
         out = self.net(x)
         return out
 

@@ -152,7 +152,7 @@ class Solver(object):
                     y = y.view(-1, 1, self.patch_size, self.patch_size)
 
                 # discriminator
-                print("### Discriminator ##")
+                # print("### Discriminator ##")
 
                 self.optimizer_d.zero_grad()
                 self.WGANVGG.discriminator.zero_grad()
@@ -165,23 +165,26 @@ class Solver(object):
                 self.optimizer_g.zero_grad()
                 self.WGANVGG.generator.zero_grad()
                 g_loss, p_loss = self.WGANVGG.g_loss(x, y, perceptual=True, return_p=True)
-                print("### Backward ##")
+                # print("### Backward ##")
                 g_loss.backward()
                 self.optimizer_g.step()
 
 
-                if total_iters % self.print_iters == 0: # total_iters = num_epochs * len(data_loader)
-                    print("STEP [{}], EPOCH [{}/{}], ITER [{}/{}], TIME [{:.1f}s]\nG_LOSS: {:.8f}, D_LOSS: {:.8f}".format(total_iters, epoch, self.num_epochs, iter_ + 1, len(self.data_loader), time.time() - start_time, g_loss.item(), d_loss.item()))
                 # learning rate decay
                 if total_iters % self.decay_iters == 0: # total_iters = num_epochs * len(data_loader)
                     self.lr_decay()
                 # save model
 
-
             train_losses.append([g_loss.item(), p_loss.item(), d_loss.item(), gp_loss.item(),
                                  g_loss.item() - p_loss.item(),
                                  d_loss.item() - gp_loss.item()])
-            if epoch % self.save_iters == 0:  # total_iters = num_epochs * len(data_loader)
+
+            if self.num_epochs % self.print_iters == 0:  # total_iters = num_epochs * len(data_loader)
+                print("STEP [{}], EPOCH [{}/{}], TIME [{:.1f}s]\nG_LOSS: {:.8f}, D_LOSS: {:.8f}".format(
+                    total_iters, epoch, self.num_epochs, time.time() - start_time,
+                    g_loss.item(), d_loss.item()))
+
+            if self.num_epochs % self.save_iters == 0:  # total_iters = num_epochs * len(data_loader)
                 print(f'saving cheking point at: {total_iters}')
                 self.save_model(total_iters, train_losses)
             # print
